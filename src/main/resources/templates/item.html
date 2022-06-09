@@ -23,7 +23,8 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand"><img src="https://bootstrap-4.ru/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"> Todolist </a>
+        <a class="navbar-brand"><img src="https://bootstrap-4.ru/docs/5.2/assets/brand/bootstrap-logo.svg" alt=""
+                                     width="30" height="24"> Todolist </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -60,11 +61,11 @@
                         <td th:text="${item.done}"></td>
                         </tbody>
                     </table>
-                    <a class="btn btn-outline-primary" th:href="@{|/completedItems}"
+                    <a class="btn btn-outline-primary" th:href="@{|/completed/${item.id}|}"
                        role="button">Выполнить</a>
-                    <a class="btn btn-outline-primary" th:href="@{|/formUpdateItem/${item.id}}"
+                    <a class="btn btn-outline-primary" th:href="@{|/formUpdateItem/${item.id}|}"
                        role="button">Редактировать</a>
-                    <a class="btn btn-outline-danger" th:href="@{|/formDeleteItem/${item.id}}"
+                    <a class="btn btn-outline-danger" th:href="@{|/formDeleteItem/${item.id}|}"
                        role="button">Удалить</a>
                 </form>
             </div>

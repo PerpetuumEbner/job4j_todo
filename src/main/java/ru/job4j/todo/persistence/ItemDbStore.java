@@ -39,21 +39,18 @@ public class ItemDbStore {
     /**
      * Обновление параметров задания по id.
      *
-     * @param id          Id задания которое нужно обновить.
-     * @param description Описание задания.
-     * @param created     Дата изменения задания.
-     * @param done        Статус выполнения.
+     * @param item
      */
-    public void update(int id, String name, String description, Timestamp created, boolean done) {
+    public void update(Item item) {
         Session session = sf.openSession();
         session.beginTransaction();
         session.createQuery("update Item set name = :newName, description = :newDescription, created = :newCreated, "
                         + "done = :newDone where id = :id")
-                .setParameter("id", id)
-                .setParameter("newName", name)
-                .setParameter("newDescription", description)
-                .setParameter("newCreated", created)
-                .setParameter("newDone", done)
+                .setParameter("id", item.getId())
+                .setParameter("newName", item.getName())
+                .setParameter("newDescription", item.getDescription())
+                .setParameter("newCreated", item.getCreated())
+                .setParameter("newDone", item.isDone())
                 .executeUpdate();
         session.getTransaction().commit();
         session.close();
@@ -67,7 +64,23 @@ public class ItemDbStore {
     public void delete(int id) {
         Session session = sf.openSession();
         session.beginTransaction();
+        session.delete(id);
         session.createQuery("delete from Item where id = :id")
+                .setParameter("id", id).executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+    }
+
+    /**
+     * Выполнение задания.
+     *
+     * @param id Id выполненного задания.
+     */
+    public void complete(int id) {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        session.delete(id);
+        session.createQuery("update Item set done = true where id = :id")
                 .setParameter("id", id).executeUpdate();
         session.getTransaction().commit();
         session.close();

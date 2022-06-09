@@ -49,15 +49,9 @@ public class ItemController {
         return "item";
     }
 
-    @GetMapping("/formDeleteItem/{itemId}")
-    public String formDeleteItem(Model model, @PathVariable("itemId") int id) {
-        model.addAttribute("item", store.findById(id));
-        return "deleteItem";
-    }
-
-    @PostMapping("deleteItem")
-    public String deleteItem(@ModelAttribute Item item) {
-        store.delete(item.getId());
+    @PostMapping("/deleteItem/{itemId}")
+    public String deleteItem(@PathVariable("itemId") int id) {
+        store.delete(id);
         return "redirect:/items";
     }
 
@@ -69,14 +63,13 @@ public class ItemController {
 
     @PostMapping("/updateItems")
     public String updateItem(@ModelAttribute Item item) {
-        store.update(item.getId(), item.getName(), item.getDescription(), Timestamp.from(Instant.now()), item.isDone());
+        store.update(item);
         return "redirect:/items";
     }
 
-    @PostMapping("/completed")
-    public String completed(@ModelAttribute Item item) {
-        item.setDone(true);
-        store.update(item.getId(), item.getName(), item.getDescription(), Timestamp.from(Instant.now()), item.isDone());
+    @PostMapping("/completed/{itemId}")
+    public String completed(@ModelAttribute Item item, @PathVariable("itemId") int id) {
+        store.complete(id);
         return "items";
     }
 

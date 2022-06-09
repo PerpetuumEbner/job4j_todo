@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.Item;
 import ru.job4j.todo.persistence.ItemDbStore;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -33,15 +32,12 @@ public class ItemService {
     }
 
     /**
-     * Обновление параметров задания по id.
+     * Обновление параметров задания.
      *
-     * @param id          Id задания которое нужно обновить.
-     * @param description Описание задания.
-     * @param created     Дата изменения задания.
-     * @param done        Статус выполнения.
+     * @param item Обновленное задание.
      */
-    public void update(int id, String name, String description, Timestamp created, boolean done) {
-        store.update(id, name, description, created, done);
+    public void update(Item item) {
+        store.update(item);
     }
 
     /**
@@ -51,6 +47,15 @@ public class ItemService {
      */
     public void delete(int id) {
         store.delete(id);
+    }
+
+    /**
+     * Выполнение задания.
+     *
+     * @param id Id выполненного задания.
+     */
+    public void complete(int id) {
+        store.complete(id);
     }
 
     /**
