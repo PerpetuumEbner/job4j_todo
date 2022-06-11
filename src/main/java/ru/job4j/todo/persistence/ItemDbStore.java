@@ -64,7 +64,6 @@ public class ItemDbStore {
     public void delete(int id) {
         Session session = sf.openSession();
         session.beginTransaction();
-        session.delete(id);
         session.createQuery("delete from Item where id = :id")
                 .setParameter("id", id).executeUpdate();
         session.getTransaction().commit();
@@ -79,7 +78,6 @@ public class ItemDbStore {
     public void complete(int id) {
         Session session = sf.openSession();
         session.beginTransaction();
-        session.delete(id);
         session.createQuery("update Item set done = true where id = :id")
                 .setParameter("id", id).executeUpdate();
         session.getTransaction().commit();

@@ -57,7 +57,7 @@
                         <td th:text="${item.id}"></td>
                         <td th:text="${item.name}"></td>
                         <td th:text="${item.description}"></td>
-                        <td th:text="${item.created}"></td>
+                        <td th:text="${#dates.format(item.created, 'dd MMMM yyyy')}"></td>
                         <td th:text="${item.done}"></td>
                         </tbody>
                     </table>

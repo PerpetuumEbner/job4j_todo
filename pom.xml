@@ -78,16 +78,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-thymeleaf</artifactId>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf -->
-    <dependency>
-      <groupId>org.thymeleaf</groupId>
-      <artifactId>thymeleaf</artifactId>
-      <version>3.0.15.RELEASE</version>
-    </dependency>
-    <dependency>
       <groupId>net.jcip</groupId>
       <artifactId>jcip-annotations</artifactId>
       <version>1.0</version>

@@ -44,7 +44,7 @@
                 Редактировать задание.
             </div>
             <div class="card-body">
-                <form th:action="@{/updateItems}" method="POST" th:object="${item}">
+                <form th:action="@{/updateItem}" method="POST" th:object="${item}">
                     <input type="hidden" name="id" th:field="*{id}"/>
                     <div class="form-group">
                         <label for="name">Название</label>

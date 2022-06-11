@@ -49,8 +49,8 @@ public class ItemController {
         return "item";
     }
 
-    @PostMapping("/deleteItem/{itemId}")
-    public String deleteItem(@PathVariable("itemId") int id) {
+    @GetMapping("/formDeleteItem/{itemId}")
+    public String formDeleteItem(@PathVariable("itemId") int id) {
         store.delete(id);
         return "redirect:/items";
     }
@@ -61,27 +61,27 @@ public class ItemController {
         return "updateItem";
     }
 
-    @PostMapping("/updateItems")
+    @PostMapping("/updateItem")
     public String updateItem(@ModelAttribute Item item) {
         store.update(item);
         return "redirect:/items";
     }
 
-    @PostMapping("/completed/{itemId}")
-    public String completed(@ModelAttribute Item item, @PathVariable("itemId") int id) {
+    @GetMapping("/completed/{itemId}")
+    public String completed(@PathVariable("itemId") int id) {
         store.complete(id);
-        return "items";
+        return "redirect:/items";
     }
 
     @GetMapping("/completedItems")
     public String completedItems(Model model) {
-        model.addAttribute("completedItems", store.findByCompletedItems());
-        return "completedItems";
+        model.addAttribute("items", store.findByCompletedItems());
+        return "items";
     }
 
     @GetMapping("/actualItems")
     public String actualItems(Model model) {
-        model.addAttribute("actualItems", store.findByActualItems());
-        return "actualItems";
+        model.addAttribute("items", store.findByActualItems());
+        return "items";
     }
 }
