@@ -44,12 +44,11 @@ public class ItemDbStore {
     public void update(Item item) {
         Session session = sf.openSession();
         session.beginTransaction();
-        session.createQuery("update Item set name = :newName, description = :newDescription, created = :newCreated, "
+        session.createQuery("update Item set name = :newName, description = :newDescription, "
                         + "done = :newDone where id = :id")
                 .setParameter("id", item.getId())
                 .setParameter("newName", item.getName())
                 .setParameter("newDescription", item.getDescription())
-                .setParameter("newCreated", item.getCreated())
                 .setParameter("newDone", item.isDone())
                 .executeUpdate();
         session.getTransaction().commit();
