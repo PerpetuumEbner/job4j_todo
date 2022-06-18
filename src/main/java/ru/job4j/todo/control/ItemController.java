@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.job4j.todo.model.Item;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.ItemService;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.time.Instant;
 
@@ -25,13 +27,25 @@ public class ItemController {
     }
 
     @GetMapping("/items")
-    public String items(Model model) {
+    public String items(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("items", store.findAll());
         return "items";
     }
 
     @GetMapping("/formAddItem")
-    public String addItem(Model model) {
+    public String addItem(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("item", new Item());
         return "addItem";
     }
@@ -50,13 +64,25 @@ public class ItemController {
     }
 
     @GetMapping("/formDeleteItem/{itemId}")
-    public String formDeleteItem(@PathVariable("itemId") int id) {
+    public String formDeleteItem(Model model, @PathVariable("itemId") int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         store.delete(id);
         return "redirect:/items";
     }
 
     @GetMapping("/formUpdateItem/{itemId}")
-    public String formUpdateItem(Model model, @PathVariable("itemId") int id) {
+    public String formUpdateItem(Model model, @PathVariable("itemId") int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("item", store.findById(id));
         return "updateItem";
     }
@@ -68,19 +94,37 @@ public class ItemController {
     }
 
     @GetMapping("/completed/{itemId}")
-    public String completed(@PathVariable("itemId") int id) {
+    public String completed(Model model, @PathVariable("itemId") int id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         store.complete(id);
         return "redirect:/items";
     }
 
     @GetMapping("/completedItems")
-    public String completedItems(Model model) {
+    public String completedItems(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("items", store.findByCompletedItems());
         return "items";
     }
 
     @GetMapping("/actualItems")
-    public String actualItems(Model model) {
+    public String actualItems(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            user = new User();
+            user.setName("Гость");
+        }
+        model.addAttribute("user", user);
         model.addAttribute("items", store.findByActualItems());
         return "items";
     }

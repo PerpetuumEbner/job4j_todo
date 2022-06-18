@@ -4,5 +4,13 @@ CREATE TABLE items
     name        TEXT,
     description TEXT,
     created     TIMESTAMP,
-    done        BOOLEAN
+    done        BOOLEAN,
+    user_id     INT NOT NULL REFERENCES users (id)
+);
+
+CREATE TABLE users
+(
+    id       SERIAL PRIMARY KEY,
+    name     TEXT,
+    password TEXT
 );

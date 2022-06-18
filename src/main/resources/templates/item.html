@@ -31,8 +31,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" th:href="@{/items}">Главная <span
-                        class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" th:href="@{/items}">Главная</a>
                 <a class="nav-item nav-link" th:href="@{/formAddItem}">Добавить</a>
                 <a class="nav-item nav-link" th:href="@{/completedItems}">Выполненные</a>
                 <a class="nav-item nav-link" th:href="@{/actualItems}">Новые</a>
@@ -50,6 +49,7 @@
                             <th scope="col">Название</th>
                             <th scope="col">Описание</th>
                             <th scope="col">Дата создания</th>
+                            <th scope="col">Имя пользователя</th>
                             <th scope="col">Статус</th>
                         </tr>
                         </thead>
@@ -58,6 +58,7 @@
                         <td th:text="${item.name}"></td>
                         <td th:text="${item.description}"></td>
                         <td th:text="${#dates.format(item.created, 'dd MMMM yyyy HH:mm')}"></td>
+                        <td th:text="${item.user.name}"></td>
                         <td th:if="${item.done}">Выполнено.</td>
                         <td th:if="${!item.done}">В работе.</td>
                         </tbody>

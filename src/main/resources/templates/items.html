@@ -23,20 +23,29 @@
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand"><img src="https://bootstrap-4.ru/docs/5.2/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24"> Todolist </a>
+        <a class="navbar-brand"><img src="https://bootstrap-4.ru/docs/5.2/assets/brand/bootstrap-logo.svg" alt=""
+                                     width="30" height="24"> Todolist </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" th:href="@{/items}">Главная <span
-                        class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" th:href="@{/items}">Главная</a>
                 <a class="nav-item nav-link" th:href="@{/formAddItem}">Добавить</a>
                 <a class="nav-item nav-link" th:href="@{/completedItems}">Выполненные</a>
                 <a class="nav-item nav-link" th:href="@{/actualItems}">Новые</a>
             </div>
         </div>
+        <a class="nav-item nav-link" th:href="@{/formAddUser}">Регистрация</a>
+        <a class="nav-item nav-link" th:if="${user.name == 'Гость'}" th:href="@{/loginPage}">
+            <span th:text="${user.name}"></span>
+            <span> | Войти</span>
+        </a>
+        <a class="nav-item nav-link" th:if="${user.name != 'Гость'}" th:href="@{/logout}">
+            <span th:text="${user.name}"></span>
+            <span> | Выйти</span>
+        </a>
     </nav>
     <div class="container pt-3">
         <div class="card-body" style="width: 100%">
