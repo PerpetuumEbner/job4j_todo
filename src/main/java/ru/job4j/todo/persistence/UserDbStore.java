@@ -1,13 +1,10 @@
 package ru.job4j.todo.persistence;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.User;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * В классе происходит обработка пользователей в базе данных.
@@ -16,26 +13,11 @@ import java.util.function.Function;
  * @version 1.0
  */
 @Repository
-public class UserDbStore {
+public class UserDbStore implements Wrapper {
     private final SessionFactory sf;
 
     public UserDbStore(SessionFactory sf) {
         this.sf = sf;
-    }
-
-    private <T> T tx(final Function<Session, T> command) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            session.getTransaction().rollback();
-            throw e;
-        } finally {
-            session.close();
-        }
     }
 
     /**
@@ -44,13 +26,12 @@ public class UserDbStore {
      * @param user Новый пользователь.
      */
     public Optional<User> create(User user) {
-        Optional result = Optional.empty();
         try {
-            result = Optional.of(this.tx(session -> session.save(user)));
+            this.tx(session -> session.save(user), sf);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return result;
+        return Optional.ofNullable(user);
     }
 
     /**
@@ -61,7 +42,7 @@ public class UserDbStore {
      */
     public User findById(int id) {
         return this.tx(session -> (User) session.createQuery(
-                "from User where id = :id").setParameter("id", id).uniqueResult());
+                "from User where id = :id").setParameter("id", id).uniqueResult(), sf);
     }
 
     /**
@@ -76,7 +57,7 @@ public class UserDbStore {
                         "from User where name = :name and password = :password")
                 .setParameter("name", name)
                 .setParameter("password", password)
-                .uniqueResultOptional()
+                .uniqueResultOptional(), sf
         );
     }
 }

@@ -28,24 +28,14 @@ public class ItemController {
 
     @GetMapping("/items")
     public String items(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        userHttpSession(model, session);
         model.addAttribute("items", store.findAll());
         return "items";
     }
 
     @GetMapping("/formAddItem")
     public String addItem(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        userHttpSession(model, session);
         model.addAttribute("item", new Item());
         return "addItem";
     }
@@ -65,24 +55,14 @@ public class ItemController {
 
     @GetMapping("/formDeleteItem/{itemId}")
     public String formDeleteItem(Model model, @PathVariable("itemId") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        userHttpSession(model, session);
         store.delete(id);
         return "redirect:/items";
     }
 
     @GetMapping("/formUpdateItem/{itemId}")
     public String formUpdateItem(Model model, @PathVariable("itemId") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        userHttpSession(model, session);
         model.addAttribute("item", store.findById(id));
         return "updateItem";
     }
@@ -95,37 +75,31 @@ public class ItemController {
 
     @GetMapping("/completed/{itemId}")
     public String completed(Model model, @PathVariable("itemId") int id, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        userHttpSession(model, session);
         store.complete(id);
         return "redirect:/items";
     }
 
     @GetMapping("/completedItems")
     public String completedItems(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
+        userHttpSession(model, session);
         model.addAttribute("items", store.findByCompletedItems());
         return "items";
     }
 
     @GetMapping("/actualItems")
     public String actualItems(Model model, HttpSession session) {
+        userHttpSession(model, session);
+        model.addAttribute("items", store.findByActualItems());
+        return "items";
+    }
+
+    private void userHttpSession(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             user = new User();
             user.setName("Гость");
         }
         model.addAttribute("user", user);
-        model.addAttribute("items", store.findByActualItems());
-        return "items";
     }
 }

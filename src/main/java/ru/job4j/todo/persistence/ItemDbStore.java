@@ -1,15 +1,12 @@
 package ru.job4j.todo.persistence;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.Item;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * В классе происходит обработка заданий в базе данных.
@@ -18,26 +15,11 @@ import java.util.function.Function;
  * @version 1.0
  */
 @Repository
-public class ItemDbStore {
+public class ItemDbStore implements Wrapper {
     private final SessionFactory sf;
 
     public ItemDbStore(SessionFactory sf) {
         this.sf = sf;
-    }
-
-    private <T> T tx(final Function<Session, T> command) {
-        final Session session = sf.openSession();
-        final Transaction tx = session.beginTransaction();
-        try {
-            T rsl = command.apply(session);
-            tx.commit();
-            return rsl;
-        } catch (final Exception e) {
-            session.getTransaction().rollback();
-            throw e;
-        } finally {
-            session.close();
-        }
     }
 
     /**
@@ -46,7 +28,7 @@ public class ItemDbStore {
      * @param item Новое задание.
      */
     public void create(Item item) {
-        this.tx(session -> session.save(item));
+        this.tx(session -> session.save(item), sf);
     }
 
     /**
@@ -62,7 +44,7 @@ public class ItemDbStore {
                         .setParameter("newName", item.getName())
                         .setParameter("newDescription", item.getDescription())
                         .setParameter("newDone", item.isDone())
-                        .executeUpdate()
+                        .executeUpdate(), sf
         );
     }
 
@@ -74,7 +56,7 @@ public class ItemDbStore {
     public void delete(int id) {
         this.tx(
                 session -> session.createQuery("delete from Item where id = :id")
-                        .setParameter("id", id).executeUpdate()
+                        .setParameter("id", id).executeUpdate(), sf
         );
     }
 
@@ -86,7 +68,7 @@ public class ItemDbStore {
     public void complete(int id) {
         this.tx(
                 session -> session.createQuery("update Item set done = true where id = :id")
-                        .setParameter("id", id).executeUpdate()
+                        .setParameter("id", id).executeUpdate(), sf
         );
     }
 
@@ -97,7 +79,7 @@ public class ItemDbStore {
      */
     public List findAll() {
         return this.tx(
-                session -> session.createQuery("from Item ").list()
+                session -> session.createQuery("from Item ").list(), sf
         );
     }
 
@@ -110,7 +92,7 @@ public class ItemDbStore {
     public Item findById(int id) {
         return this.tx(
                 session -> (Item) session.createQuery("from Item where id = :id")
-                        .setParameter("id", id).uniqueResult()
+                        .setParameter("id", id).uniqueResult(), sf
         );
     }
 
@@ -121,7 +103,7 @@ public class ItemDbStore {
      */
     public List findByCompletedItems() {
         return this.tx(
-                session -> session.createQuery("from Item where done = true").list()
+                session -> session.createQuery("from Item where done = true").list(), sf
         );
     }
 
@@ -136,7 +118,7 @@ public class ItemDbStore {
         return this.tx(
                 session -> session
                         .createQuery("from Item where created > :actualTime ")
-                        .setParameter("actualTime", actualTime).list()
+                        .setParameter("actualTime", actualTime).list(), sf
         );
     }
 }

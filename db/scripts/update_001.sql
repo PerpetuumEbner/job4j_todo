@@ -11,6 +11,6 @@ CREATE TABLE items
 CREATE TABLE users
 (
     id       SERIAL PRIMARY KEY,
-    name     TEXT,
+    name     TEXT UNIQUE,
     password TEXT
 );
