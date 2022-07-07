@@ -42,26 +42,15 @@
     <div class="row pt-3">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Новая задача.
+                Новая категория.
             </div>
             <div class="card-body">
-                <form th:action="@{/createItem}" method="POST">
+                <form th:action="@{/createCategory}" method="POST">
                     <input type="hidden" name="id" value="0"/>
-                    <input type="hidden" name="user.id" th:value="${user.id}">
+                    <input type="hidden" name="user.id" th:value="${category.id}">
                     <div class="form-group">
                         <label for="name">Название</label>
                         <input type="text" class="form-control" name="name" id="name">
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Описание</label>
-                        <textarea class="form-control" name="description" id="description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="category.id">Категория</label>
-                        <select class="form-control" id="category.id" name="categoryId" multiple="multiple" size="3">
-                            <option th:each="category : ${categories}" th:value="${category.id}"
-                                    th:text="${category.name}"></option>
-                        </select>
                     </div>
                     <button type="submit" class="btn btn-outline-primary">Создать</button>
                 </form>

@@ -35,6 +35,7 @@
                 <a class="nav-item nav-link" th:href="@{/formAddItem}">Добавить</a>
                 <a class="nav-item nav-link" th:href="@{/completedItems}">Выполненные</a>
                 <a class="nav-item nav-link" th:href="@{/actualItems}">Новые</a>
+                <a class="nav-item nav-link" th:href="@{/categories}">Категории</a>
             </div>
         </div>
     </nav>
@@ -50,6 +51,7 @@
                             <th scope="col">Описание</th>
                             <th scope="col">Дата создания</th>
                             <th scope="col">Имя пользователя</th>
+                            <th scope="col">Категория</th>
                             <th scope="col">Статус</th>
                         </tr>
                         </thead>
@@ -59,6 +61,7 @@
                         <td th:text="${item.description}"></td>
                         <td th:text="${#dates.format(item.created, 'dd MMMM yyyy HH:mm')}"></td>
                         <td th:text="${item.user.name}"></td>
+                        <td th:each="category: ${item.getCategories()}" th:text="${category.name}"></td>
                         <td th:if="${item.done}">Выполнено.</td>
                         <td th:if="${!item.done}">В работе.</td>
                         </tbody>
