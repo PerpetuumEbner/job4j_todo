@@ -11,8 +11,8 @@ import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.ItemService;
 
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @ThreadSafe
@@ -45,7 +45,7 @@ public class ItemController {
 
     @PostMapping("/createItem")
     public String createItem(@ModelAttribute Item item, @RequestParam("categoryId") List<Integer> categoriesId) {
-        item.setCreated(Timestamp.from(Instant.now()));
+        item.setCreated(Date.from(Instant.now()));
         for (Integer id : categoriesId) {
             item.addCategory(categoryService.findByID(id));
         }

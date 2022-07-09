@@ -1,7 +1,7 @@
 package ru.job4j.todo.model;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +17,8 @@ public class Item {
 
     private String description;
 
-    private Timestamp created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
 
     private boolean done;
 
@@ -31,7 +32,7 @@ public class Item {
     public Item() {
     }
 
-    public Item(int id, String name, String description, Timestamp created, boolean done, User user) {
+    public Item(int id, String name, String description, Date created, boolean done, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -64,11 +65,11 @@ public class Item {
         this.description = description;
     }
 
-    public Timestamp getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
