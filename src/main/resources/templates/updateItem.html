@@ -48,6 +48,7 @@
                 <form th:action="@{/updateItem}" method="POST" th:object="${item}">
                     <input type="hidden" name="id" th:field="*{id}"/>
                     <input type="hidden" name="created" th:field="*{created}"/>
+                    <input type="hidden" name="user.id" th:field="*{user.id}"/>
                     <div class="form-group">
                         <label for="name">Название</label>
                         <input type="text" class="form-control" name="name" id="name" th:field="*{name}">

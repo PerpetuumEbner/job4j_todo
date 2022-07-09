@@ -36,15 +36,12 @@ public class ItemDbStore implements Wrapper {
      *
      * @param item Обновлённое задание.
      */
-    public void update(Item item) {
-        this.tx(
-                session -> session.createQuery("update Item set name = :newName, description = :newDescription, "
-                                + "done = :newDone where id = :id")
-                        .setParameter("id", item.getId())
-                        .setParameter("newName", item.getName())
-                        .setParameter("newDescription", item.getDescription())
-                        .setParameter("newDone", item.isDone())
-                        .executeUpdate(), sf
+    public Item update(Item item) {
+        return this.tx(
+                session -> {
+                    session.update(item);
+                    return item;
+                }, sf
         );
     }
 
@@ -79,7 +76,7 @@ public class ItemDbStore implements Wrapper {
      */
     public List findAll() {
         return this.tx(
-                session -> session.createQuery("from Item ").list(), sf
+                session -> session.createQuery("select distinct i from Item i join fetch i.categories").list(), sf
         );
     }
 
@@ -91,7 +88,7 @@ public class ItemDbStore implements Wrapper {
      */
     public Item findById(int id) {
         return this.tx(
-                session -> (Item) session.createQuery("from Item where id = :id")
+                session -> (Item) session.createQuery("select distinct i from Item i join fetch i.categories where i.id = :id")
                         .setParameter("id", id).uniqueResult(), sf
         );
     }
@@ -103,7 +100,7 @@ public class ItemDbStore implements Wrapper {
      */
     public List findByCompletedItems() {
         return this.tx(
-                session -> session.createQuery("from Item where done = true").list(), sf
+                session -> session.createQuery("select distinct i from Item i join fetch i.categories where i.done = true").list(), sf
         );
     }
 
@@ -117,7 +114,7 @@ public class ItemDbStore implements Wrapper {
         Timestamp actualTime = Timestamp.valueOf(dateTime);
         return this.tx(
                 session -> session
-                        .createQuery("from Item where created > :actualTime ")
+                        .createQuery("select distinct i from Item i join fetch i.categories where i.created > :actualTime ")
                         .setParameter("actualTime", actualTime).list(), sf
         );
     }
